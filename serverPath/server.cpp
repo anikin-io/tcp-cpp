@@ -12,7 +12,6 @@
 #include <ctime>
 #include <sys/stat.h>
 
-
 #define BUFFER_SIZE 1024
 #define MAX_THREADS 5
 
@@ -61,7 +60,7 @@ public:
         
                 if (bytes_received < 0) {
                     cerr << "Ошибка отправки. Файл не сохранен: " << file_path << endl;
-                    remove(file_path.c_str()); // Удаляем файл, так как он не был полностью получен
+                    remove(file_path.c_str());
                 }
         
                 close(client_socket);
@@ -124,15 +123,12 @@ void signal_handler(int signum) {
         cout << "Выход с сохранением..." << endl;
         terminate_flag = 1;
 
-        // Добавим код для ожидания завершения потоков
         for (size_t i = 0; i < thread_count; ++i) {
             pthread_join(threads[i], nullptr);
         }
 
-        // Дополнительные действия при завершении
         cout << "Сервер завершен." << endl;
 
-        // Закрытие серверного сокета
         close(server_socket);
 
         exit(EXIT_SUCCESS);
@@ -170,7 +166,6 @@ int main(int argc, char* argv[]) {
         max_file_size = stoull(argv[5]);
     }
 
-    // Создание демона
     pid_t pid, sid;
     pid = fork();
     if (pid < 0) {
@@ -178,19 +173,16 @@ int main(int argc, char* argv[]) {
         exit(EXIT_FAILURE);
     }
     if (pid > 0) {
-        // Родительский процесс завершает работу
         exit(EXIT_SUCCESS);
     }
-    umask(0); // Установка маски файлов
+    umask(0); 
 
-    // Создание новой сессии
     sid = setsid();
     if (sid < 0) {
         cerr << "Ошибка создания новой сессии.\n";
         exit(EXIT_FAILURE);
     }
 
-    // Закрытие стандартных дескрипторов ввода/вывода/ошибок
     close(STDIN_FILENO);
     close(STDOUT_FILENO);
     close(STDERR_FILENO);
