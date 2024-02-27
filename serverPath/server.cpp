@@ -143,7 +143,7 @@ int main(int argc, char* argv[]) {
     string host = "127.0.0.1";
     int port = 12345;
     int max_threads = 5;
-    string file_dir = "../uploads";
+    string file_dir = "uploads";
     size_t max_file_size = 1048576;
 
     if (argc > 1) {
